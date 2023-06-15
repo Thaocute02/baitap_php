@@ -1,0 +1,135 @@
+<?php
+    $servername = "localhost";
+    $database = "test";
+    $username = "root";
+    $password = "";
+
+    $connection = mysqli_connect($servername, $username, $password, $database);
+
+    if(!$connection)
+        die("Unable to connect to MySQL: " . mysqli_error()); 
+        // Thông báo lỗi nếu kết nối thất bại 
+    if (!mysqli_select_db($connecction, 'my_personal'))     
+        die("Unable to select database: " . mysql_error()); 
+       // Thông báo lỗi nếu chọn CSDL thất bại
+    
+    $sql_select = "SELECT * FROM danhsachsinhvien WHERE masinhvien= 'SV001'";
+
+    $result = mysqli_query($connection, $sql_select);
+       // Thực thi câu lệnh SQL
+    $rows = mysqli_num_rows($result); 
+    if (!$result)     
+        die("Database access failed: " . mysqli_error()); 
+        // Thông báo lỗi nếu thực thi thất bại
+        
+        $rows = mysqli_num_rows($result); 
+        // Lấy số hàng trả về
+    if ($rows) {
+        while ($row = mysqli_fetch_array($result)) {         
+            echo 'Mã sv: ' . $row['masinhvien'] . '<br>';         
+            echo 'Họ tên: ' . $row['hoten'] . '<br>';        
+            echo 'Ngày sinh: ' . $row['NGAYSINH'] . '<br>';         
+            echo 'Lớp: ' . $row['LOPHOC'] . '<br>';         
+            echo 'ĐTB: ' . $row['ĐTB'] . '<br>';             
+        } 
+    } 
+    //Insert
+    $sql_insert = "INSERT INTO danhsachsinhvien (massinhvien, hoten, NGAYSINH, LOPHOC, ĐTB) 
+    VALUES('SV007','N'Nguyễn Thị Thanh Thảo','2002/07/14','K56SD1','9')"; 
+    $result = mysqli_query($connection, $sql_insert);
+    if (!$result) {
+        die("Thêm thất bại: " . mysqli_error($connection)); 
+        // Thông báo lỗi nếu thực thi câu lệnh thất bại
+    } else {
+        echo "Thêm thành công";
+    }
+    // Update
+    $sql_update = "UPDATE danhsachsinhvien SET hoten = 'N'Nguyễn Thị Thanh Thảo' WHERE maSV = 'SV001'";
+    $result = mysqli_query($connection,$sql_update);
+    if (!$result) {
+        die("Thất bại: " . mysqli_error($connection)); 
+        // Thông báo lỗi nếu thực thi câu lệnh thất bại
+    } else {
+        echo "<br> Cập nhật thành công";
+    }
+    // Delete
+    $sql_dlt = "DELETE FROM danhsachsinhvien WHERE masinhvien = 'SV005'"; 
+    $result = mysqli_query($connection,$sql_dlt ); 
+    if (!$result) {
+        die("Xoá thất bại: " . mysqli_error($connection)); 
+        // Thông báo lỗi nếu thực thi câu lệnh thất bại
+    } else {
+        echo "<br> Xoá thành công";
+    }
+    mysqli_close($connection);
+?>
+
+<?php
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $db = 'my_personal';
+    $dbh = mysqli_connect($servername, $username, $password);
+
+    if(!$dbh)
+        die("Unable to connect to MySQL: " . mysqli_error()); 
+        // Thông báo lỗi nếu kết nối thất bại 
+    if(!mysqli_select_db($dbh, 'my_personal'))     
+        die("Unable to select database: " . mysql_error()); 
+       // Thông báo lỗi nếu chọn CSDL thất bại
+    //Create table
+    $sql_stmt = "CREATE TABLE IF NOT EXISTS 'CUSTOMERS'(
+        'ID' int NOT NULL AUTO_INCREMENT,
+        'Name' varchar(100) NOT NULL,
+        'Email' varchar(50) NOT NULL,
+        'Phone' char(10) NOT NULL,
+        PRIMARY KEY ('ID')" ;
+    $result = mysqli_query($dbh, $sql_stmt);
+       // Thực thi câu lệnh SQL
+    
+    if (!$result){
+        die("Database access failed: " . mysqli_error()); 
+        // Thông báo lỗi nếu thực thi thất bại
+    }
+    else{
+       echo "Table has been add in your data"; 
+    };
+    // Insert 
+    $sql_stmt = "INSERT INTO CUSTOMERS`(ID`, Name, Email, Phone)"; 
+    $sql_stmt .= "VALUES('kh001','Nguyễn Trà My', 'my12@gmail.com','0956331234'),
+                    ('kh002','Bùi Tiến Dũng', 'Đungeptrai1@gmail.com','0384613579'),
+                    ('kh003','Nguyễn Thanh Trà', 'Tranguyen23@gmail.com','0952789347'),
+                    ('kh004','Cao Văn Thắng', 'Thangcao354@gmail.com','0345720179'),
+                    ('kh005','Lê thị Minh', 'Leminh589@gmail.com','0936782160')"; 
+
+    $result = mysqli_query($dbh, $sql_stmt); // Thực thi câu lệnh SQL
+
+    if (!$result) {
+    die("Adding record failed: " . mysqli_error()); 
+    // Thông báo lỗi nếu thực thi câu lệnh thất bại
+    } 
+    else {
+    echo "History transaction has been add in your data";
+    };
+
+    // Update
+    $sql_stmt = "UPDATE 'CUSTOMERS' SET Name = 'Nguyễn Thị Thanh Thảo'";
+    $sql_stmt .= "WHERE 'ID' = 'kh001'";
+    $result = mysqli_query($dbh,$sql_stmt);
+    if (!$result) {
+        die("Adding record failed: " . mysqli_error()); 
+        // Thông báo lỗi nếu thực thi câu lệnh thất bại
+    } else {
+        echo "History transaction has been update in your data";
+    };
+    // Delete
+    $sql_stmt = "DELETE FROM CUSTOMERS WHERE 'ID' = 'kh005'"; 
+    $result = mysqli_query($dbh,$sql_stmt); 
+    if (!$result) {
+        die("Adding record failed: " . mysqli_error()); 
+        // Thông báo lỗi nếu thực thi câu lệnh thất bại
+    } else {
+        echo "History transaction has been delete in your data";
+    };
+    mysqli_close($connection);
+?>
